@@ -62,5 +62,27 @@ public class Main {
         stack.pop();
         stack.pop();
         stack.pop(); // this one should show "Stack is empty"
+
+        System.out.println("\n--- Visit Linked List Test ---");
+        VisitLinkedList visits = new VisitLinkedList();
+
+        visits.addVisit(new Visit(1, "2025-01-10", "Dr. Perera", "Common Cold", "Rest and fluids"));
+        visits.addVisit(new Visit(2, "2025-03-22", "Dr. Fernando", "Sprained Ankle", "Bandage and rest"));
+        visits.addVisit(new Visit(3, "2025-06-15", "Dr. Silva", "Migraine", "Pain relief medication"));
+
+        System.out.println("All visits:");
+        visits.displayVisits();
+
+        System.out.println("\nSearch for visit ID 2:");
+        Visit foundVisit = visits.searchVisit(2);
+        System.out.println(foundVisit != null ? foundVisit : "Not found");
+
+        System.out.println("\nRemove visit ID 2:");
+        visits.removeVisit(2);
+        visits.displayVisits();
+
+        System.out.println("\nSearch for removed visit ID 2 (should not be found):");
+        Visit afterRemove = visits.searchVisit(2);
+        System.out.println(afterRemove != null ? afterRemove : "Not found");
     }
 }
