@@ -40,5 +40,27 @@ public class Main {
         queue.dequeue();
         queue.dequeue();
         queue.dequeue(); // this one should show "Queue is empty"
+
+        System.out.println("\n--- Treatment Stack Test ---");
+        TreatmentStack stack = new TreatmentStack();
+
+        stack.push(new TreatmentRecord(201, "Ruwan Jayasuriya", "Arm casted and bandaged"));
+        stack.push(new TreatmentRecord(202, "Ishara Wickrama", "Fever medication given"));
+        stack.push(new TreatmentRecord(203, "Chamara Bandara", "ECG performed, stabilized"));
+
+        System.out.println("All treatment records (most recent first):");
+        stack.displayStack();
+
+        System.out.println("\nPop most recent record:");
+        TreatmentRecord popped = stack.pop();
+        System.out.println("Removed: " + popped);
+
+        System.out.println("\nRemaining records:");
+        stack.displayStack();
+
+        System.out.println("\nPop all remaining, then try once more (empty case):");
+        stack.pop();
+        stack.pop();
+        stack.pop(); // this one should show "Stack is empty"
     }
 }
