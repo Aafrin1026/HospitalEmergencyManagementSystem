@@ -18,5 +18,27 @@ public class Main {
         System.out.println("\n--- Delete ID 20 ---");
         bst.delete(20);
         bst.inOrderTraversal();
+
+        System.out.println("\n--- Emergency Queue Test ---");
+        EmergencyQueue queue = new EmergencyQueue();
+
+        queue.enqueue(new Patient(201, "Ruwan Jayasuriya", 34, "0712223344", "Broken Arm"));
+        queue.enqueue(new Patient(202, "Ishara Wickrama", 28, "0723334455", "High Fever"));
+        queue.enqueue(new Patient(203, "Chamara Bandara", 50, "0734445566", "Chest Pain"));
+
+        System.out.println("Waiting patients:");
+        queue.displayQueue();
+
+        System.out.println("\nDequeue next patient for treatment:");
+        Patient next = queue.dequeue();
+        System.out.println("Now treating: " + next);
+
+        System.out.println("\nRemaining waiting patients:");
+        queue.displayQueue();
+
+        System.out.println("\nDequeue all remaining, then try once more (empty case):");
+        queue.dequeue();
+        queue.dequeue();
+        queue.dequeue(); // this one should show "Queue is empty"
     }
 }
