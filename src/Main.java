@@ -29,6 +29,10 @@ public class Main {
         System.out.println("8. Push completed treatment record");
         System.out.println("9. Pop most recent treatment record");
         System.out.println("10. Display treatment history");
+        System.out.println("11. Add visit to patient history");
+        System.out.println("12. Remove visit from patient history");
+        System.out.println("13. Search visit in patient history");
+        System.out.println("14. Display patient visit history");
         System.out.println("0. Exit");
         System.out.print("Enter your choice: ");
     }
@@ -125,6 +129,72 @@ public class Main {
                 System.out.println("--- Treatment History ---");
                 stack.displayStack();
                 break;
+
+            case 11: {
+                System.out.print("Enter Patient ID: ");
+                int pId = Integer.parseInt(scanner.nextLine());
+                Patient p = bst.search(pId);
+                if (p == null) {
+                    System.out.println("No patient found with ID " + pId);
+                    break;
+                }
+                System.out.print("Enter Visit ID: ");
+                int vId = Integer.parseInt(scanner.nextLine());
+                System.out.print("Enter Visit Date: ");
+                String vDate = scanner.nextLine();
+                System.out.print("Enter Doctor Name: ");
+                String vDoctor = scanner.nextLine();
+                System.out.print("Enter Diagnosis: ");
+                String vDiagnosis = scanner.nextLine();
+                System.out.print("Enter Treatment: ");
+                String vTreatment = scanner.nextLine();
+
+                p.visitHistory.addVisit(new Visit(vId, vDate, vDoctor, vDiagnosis, vTreatment));
+                System.out.println("Visit added to patient's history.");
+                break;
+            }
+
+            case 12: {
+                System.out.print("Enter Patient ID: ");
+                int pId = Integer.parseInt(scanner.nextLine());
+                Patient p = bst.search(pId);
+                if (p == null) {
+                    System.out.println("No patient found with ID " + pId);
+                    break;
+                }
+                System.out.print("Enter Visit ID to remove: ");
+                int vId = Integer.parseInt(scanner.nextLine());
+                p.visitHistory.removeVisit(vId);
+                break;
+            }
+
+            case 13: {
+                System.out.print("Enter Patient ID: ");
+                int pId = Integer.parseInt(scanner.nextLine());
+                Patient p = bst.search(pId);
+                if (p == null) {
+                    System.out.println("No patient found with ID " + pId);
+                    break;
+                }
+                System.out.print("Enter Visit ID to search: ");
+                int vId = Integer.parseInt(scanner.nextLine());
+                Visit v = p.visitHistory.searchVisit(vId);
+                System.out.println(v != null ? v : "Visit not found.");
+                break;
+            }
+
+            case 14: {
+                System.out.print("Enter Patient ID: ");
+                int pId = Integer.parseInt(scanner.nextLine());
+                Patient p = bst.search(pId);
+                if (p == null) {
+                    System.out.println("No patient found with ID " + pId);
+                    break;
+                }
+                System.out.println("--- Visit History for Patient " + pId + " ---");
+                p.visitHistory.displayVisits();
+                break;
+            }
 
             case 0:
                 break;

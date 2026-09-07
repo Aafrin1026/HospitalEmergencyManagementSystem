@@ -4,17 +4,17 @@ public class Patient {
     int age;
     String contactNumber;
     String medicalCondition;
+    VisitLinkedList visitHistory;
 
-    // Constructor: runs when we create a new Patient object
     public Patient(int patientId, String name, int age, String contactNumber, String medicalCondition) {
         this.patientId = patientId;
         this.name = name;
         this.age = age;
         this.contactNumber = contactNumber;
         this.medicalCondition = medicalCondition;
+        this.visitHistory = new VisitLinkedList();
     }
 
-    // Lets us print a Patient nicely instead of seeing memory addresses
     @Override
     public String toString() {
         return "ID: " + patientId +
