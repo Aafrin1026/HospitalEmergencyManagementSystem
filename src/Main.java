@@ -1,88 +1,135 @@
+import java.util.Scanner;
+
 public class Main {
+    static PatientBST bst = new PatientBST();
+    static EmergencyQueue queue = new EmergencyQueue();
+    static TreatmentStack stack = new TreatmentStack();
+    static Scanner scanner = new Scanner(System.in);
+
     public static void main(String[] args) {
-        PatientBST bst = new PatientBST();
+        int choice;
+        do {
+            printMenu();
+            choice = Integer.parseInt(scanner.nextLine());
+            handleChoice(choice);
+        } while (choice != 0);
 
-        bst.insert(new Patient(50, "Nimal Perera", 45, "0771234567", "Fracture"));
-        bst.insert(new Patient(30, "Kamal Silva", 30, "0719876543", "Flu"));
-        bst.insert(new Patient(70, "Saman Fernando", 60, "0765554433", "Chest Pain"));
-        bst.insert(new Patient(20, "Anusha Perera", 25, "0701112233", "Headache"));
-        bst.insert(new Patient(40, "Dilani Rathnayake", 50, "0778889999", "Fever"));
+        System.out.println("Exiting system. Goodbye!");
+    }
 
-        System.out.println("--- In-order traversal ---");
-        bst.inOrderTraversal();
+    static void printMenu() {
+        System.out.println("\n===== Hospital Emergency Management System =====");
+        System.out.println("1. Add new patient (BST)");
+        System.out.println("2. Search patient by ID (BST)");
+        System.out.println("3. Delete patient (BST)");
+        System.out.println("4. Display all patients (in-order)");
+        System.out.println("5. Enqueue patient to emergency queue");
+        System.out.println("6. Dequeue patient for treatment");
+        System.out.println("7. Display waiting queue");
+        System.out.println("8. Push completed treatment record");
+        System.out.println("9. Pop most recent treatment record");
+        System.out.println("10. Display treatment history");
+        System.out.println("0. Exit");
+        System.out.print("Enter your choice: ");
+    }
 
-        System.out.println("\n--- Search for ID 40 ---");
-        Patient found = bst.search(40);
-        System.out.println(found != null ? found : "Not found");
+    static void handleChoice(int choice) {
+        switch (choice) {
+            case 1:
+                System.out.print("Enter Patient ID: ");
+                int id = Integer.parseInt(scanner.nextLine());
+                System.out.print("Enter Patient Name: ");
+                String name = scanner.nextLine();
+                System.out.print("Enter Age: ");
+                int age = Integer.parseInt(scanner.nextLine());
+                System.out.print("Enter Contact Number: ");
+                String contact = scanner.nextLine();
+                System.out.print("Enter Medical Condition: ");
+                String condition = scanner.nextLine();
 
-        System.out.println("\n--- Delete ID 20 ---");
-        bst.delete(20);
-        bst.inOrderTraversal();
+                bst.insert(new Patient(id, name, age, contact, condition));
+                System.out.println("Patient added successfully.");
+                break;
 
-        System.out.println("\n--- Emergency Queue Test ---");
-        EmergencyQueue queue = new EmergencyQueue();
+            case 2:
+                System.out.print("Enter Patient ID to search: ");
+                int searchId = Integer.parseInt(scanner.nextLine());
+                Patient foundPatient = bst.search(searchId);
+                if (foundPatient != null) {
+                    System.out.println("Found: " + foundPatient);
+                } else {
+                    System.out.println("No patient found with ID " + searchId);
+                }
+                break;
 
-        queue.enqueue(new Patient(201, "Ruwan Jayasuriya", 34, "0712223344", "Broken Arm"));
-        queue.enqueue(new Patient(202, "Ishara Wickrama", 28, "0723334455", "High Fever"));
-        queue.enqueue(new Patient(203, "Chamara Bandara", 50, "0734445566", "Chest Pain"));
+            case 3:
+                System.out.print("Enter Patient ID to delete: ");
+                int deleteId = Integer.parseInt(scanner.nextLine());
+                bst.delete(deleteId);
+                System.out.println("Patient deleted (if ID existed).");
+                break;
 
-        System.out.println("Waiting patients:");
-        queue.displayQueue();
+            case 4:
+                System.out.println("--- All Patients (ascending ID) ---");
+                bst.inOrderTraversal();
+                break;
 
-        System.out.println("\nDequeue next patient for treatment:");
-        Patient next = queue.dequeue();
-        System.out.println("Now treating: " + next);
+            case 5:
+                System.out.print("Enter Patient ID to enqueue: ");
+                int qId = Integer.parseInt(scanner.nextLine());
+                System.out.print("Enter Patient Name: ");
+                String qName = scanner.nextLine();
+                System.out.print("Enter Age: ");
+                int qAge = Integer.parseInt(scanner.nextLine());
+                System.out.print("Enter Contact Number: ");
+                String qContact = scanner.nextLine();
+                System.out.print("Enter Medical Condition: ");
+                String qCondition = scanner.nextLine();
 
-        System.out.println("\nRemaining waiting patients:");
-        queue.displayQueue();
+                queue.enqueue(new Patient(qId, qName, qAge, qContact, qCondition));
+                System.out.println("Patient added to emergency queue.");
+                break;
 
-        System.out.println("\nDequeue all remaining, then try once more (empty case):");
-        queue.dequeue();
-        queue.dequeue();
-        queue.dequeue(); // this one should show "Queue is empty"
+            case 6:
+                Patient dequeued = queue.dequeue();
+                if (dequeued != null) {
+                    System.out.println("Now treating: " + dequeued);
+                }
+                break;
 
-        System.out.println("\n--- Treatment Stack Test ---");
-        TreatmentStack stack = new TreatmentStack();
+            case 7:
+                System.out.println("--- Waiting Queue ---");
+                queue.displayQueue();
+                break;
 
-        stack.push(new TreatmentRecord(201, "Ruwan Jayasuriya", "Arm casted and bandaged"));
-        stack.push(new TreatmentRecord(202, "Ishara Wickrama", "Fever medication given"));
-        stack.push(new TreatmentRecord(203, "Chamara Bandara", "ECG performed, stabilized"));
+            case 8:
+                System.out.print("Enter Patient ID: ");
+                int tId = Integer.parseInt(scanner.nextLine());
+                System.out.print("Enter Patient Name: ");
+                String tName = scanner.nextLine();
+                System.out.print("Enter Treatment Given: ");
+                String tGiven = scanner.nextLine();
 
-        System.out.println("All treatment records (most recent first):");
-        stack.displayStack();
+                stack.push(new TreatmentRecord(tId, tName, tGiven));
+                System.out.println("Treatment record added.");
+                break;
 
-        System.out.println("\nPop most recent record:");
-        TreatmentRecord popped = stack.pop();
-        System.out.println("Removed: " + popped);
+            case 9:
+                TreatmentRecord popped = stack.pop();
+                if (popped != null) {
+                    System.out.println("Removed: " + popped);
+                }
+                break;
 
-        System.out.println("\nRemaining records:");
-        stack.displayStack();
+            case 10:
+                System.out.println("--- Treatment History ---");
+                stack.displayStack();
+                break;
 
-        System.out.println("\nPop all remaining, then try once more (empty case):");
-        stack.pop();
-        stack.pop();
-        stack.pop(); // this one should show "Stack is empty"
-
-        System.out.println("\n--- Visit Linked List Test ---");
-        VisitLinkedList visits = new VisitLinkedList();
-
-        visits.addVisit(new Visit(1, "2025-01-10", "Dr. Perera", "Common Cold", "Rest and fluids"));
-        visits.addVisit(new Visit(2, "2025-03-22", "Dr. Fernando", "Sprained Ankle", "Bandage and rest"));
-        visits.addVisit(new Visit(3, "2025-06-15", "Dr. Silva", "Migraine", "Pain relief medication"));
-
-        System.out.println("All visits:");
-        visits.displayVisits();
-
-        System.out.println("\nSearch for visit ID 2:");
-        Visit foundVisit = visits.searchVisit(2);
-        System.out.println(foundVisit != null ? foundVisit : "Not found");
-
-        System.out.println("\nRemove visit ID 2:");
-        visits.removeVisit(2);
-        visits.displayVisits();
-
-        System.out.println("\nSearch for removed visit ID 2 (should not be found):");
-        Visit afterRemove = visits.searchVisit(2);
-        System.out.println(afterRemove != null ? afterRemove : "Not found");
+            case 0:
+                break;
+            default:
+                System.out.println("Invalid choice, try again.");
+        }
     }
 }
